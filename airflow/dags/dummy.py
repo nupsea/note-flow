@@ -45,15 +45,17 @@ with DAG(
         A function that converts a notebook into an ascii doc file.
         """
         generate = subprocess.run(
-            ["jupyter", "nbconvert", f"{notebook_file}.ipynb", "--to=asciidoc"]
+            ["jupyter", "nbconvert", f"{notebook_file}.ipynb", "--to=markdown"]
         )
         log.info("HTML Report was generated")
         log.info(f" {generate}\n Notebook Run Output: ")
-        adoc_file = f"{notebook_file}.asciidoc"
-        with open(adoc_file, 'r') as af:
-            log.info(af.read())
+        log_file = f"{notebook_file}.md"
+        # log_file = f"{notebook_file}.asciidoc"
 
-        return [adoc_file]
+        with open(log_file, 'r') as lf:
+            log.info(lf.read())
+
+        return [log_file]
 
     @task
     def clean_up(files: list):
